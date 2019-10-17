@@ -10,11 +10,14 @@ public class EnemySpawner : MonoBehaviour {
 	public float speed = 1.5f;
 	float xmin = -5;
 	float xmax = 5;
+	
+	public float spawnDelay = 0.5f;
 	//public float padding = 1f;
 	
 	public bool moveLeft = false;
 	 
 	void Start () {
+		Debug.Log ("Empty Formation");
 		// send boundaries for enemy spawner
 		float distance = transform.position.z - Camera.main.transform.position.z; 
 		Vector3 leftEdge = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance)); // gets the furthest left position
@@ -23,12 +26,7 @@ public class EnemySpawner : MonoBehaviour {
 		xmin = leftEdge.x;
 		xmax = rightEdge.x;
 		
-
-		foreach(Transform child in transform){
-			GameObject enemy = Instantiate (enemyPrefab, child.transform.position, Quaternion.identity) as GameObject; // instantiate creates an object, so we're going to consider it as a GameObject
-			// below I'll attach the enemy so he's instantiated inside of the spawner
-			enemy.transform.parent = child; // this says you'll be a child of our parent (whatever this script is attached to) transform
-		}
+		SpawnUntilFull ();
 	}
 	
 	public void OnDrawGizmos() {
@@ -37,6 +35,7 @@ public class EnemySpawner : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		MoveEnemies();
+		SpawnEnemies();
 	}
 	
 	public void MoveEnemies(){
@@ -51,8 +50,51 @@ public class EnemySpawner : MonoBehaviour {
 			moveLeft = false;
 		} 
 		
+		
 		float newX = Mathf.Clamp (transform.position.x, xmin, xmax); 
 		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+	}
+	
+	/// <summary>
+	/// 			Respawning Enemies
+	/// </summary>
+	
+	Transform NextFreePosition() {
+		foreach(Transform childPositionGameObject in transform) { // the transform is actually what keeps the children in it, strangely
+			if(childPositionGameObject.childCount == 0) {
+				return childPositionGameObject;
+			}
+		}
+		return null;
+	}
+	
+	bool AllMembersDead(){
+		foreach(Transform childPositionGameObject in transform) { // the transform is actually what keeps the children in it, strangely
+			if(childPositionGameObject.childCount > 0) {
+				return false;
+			}
+		}
+		return true;
+		
+	}
+	
+	void SpawnEnemies(){
+		if (AllMembersDead()){
+			SpawnUntilFull();
+		}
+	}
+	
+	void SpawnUntilFull(){
+		Transform freePosition = NextFreePosition();
+		if (freePosition){
+			GameObject enemy = Instantiate (enemyPrefab, freePosition.position, Quaternion.identity) as GameObject; // instantiate creates an object, so we're going to consider it as a GameObject
+			// below I'll attach the enemy so he's instantiated inside of the spawner
+			enemy.transform.parent = freePosition; // this says you'll be a child of our parent (whatever this script is attached to) transform
+		}
+		if(NextFreePosition()){
+			Invoke ("SpawnUntilFull", spawnDelay);
+		}
+		
 	}
 	
 
