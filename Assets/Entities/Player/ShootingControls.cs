@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Projectile : MonoBehaviour {
+public class ShootingControls : MonoBehaviour {
 	
 	public GameObject laserPrefab;
 	public PlayerController player;
 	public float laserSpeed;
 	public float firingRate = 0.2f;
-	public float damage = 100f;
+	
 	
 	
 	void Start () {
@@ -16,11 +16,12 @@ public class Projectile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//print("new! " + gameObject.GetComponent<Projectile>());
+		//print("new! " + gameObject.GetComponent<ShootingControls>());
 		ShootLaser();
 	}
 	
 	public void SpamFire(){
+		// I unticked friendlies from colliding with friendlies in Project Settings
 		Vector3 playerPos = player.transform.position;
 		playerPos.y += 0.78f;
 		GameObject laser = Instantiate (laserPrefab, playerPos, Quaternion.identity) as GameObject; //quaternion is rotations I think.
@@ -37,9 +38,7 @@ public class Projectile : MonoBehaviour {
 		}
 	}
 	
-	void Hit(){
-		Destroy (gameObject);
-	}
+
 	
 	
 }

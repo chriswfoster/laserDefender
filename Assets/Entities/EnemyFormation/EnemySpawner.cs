@@ -55,7 +55,5 @@ public class EnemySpawner : MonoBehaviour {
 		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 	}
 	
-	void OnTriggerEnter2D(Collider2D col){
-		print("I've been hit!!!");
-	}
+
 }

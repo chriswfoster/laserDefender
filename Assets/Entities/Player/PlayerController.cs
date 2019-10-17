@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+	public float playerHealth = 200; 
 	public float speed = 1.5f;
 	float xmin = -5;
 	float xmax = 5;
@@ -46,4 +47,22 @@ public class PlayerController : MonoBehaviour {
 		float newX = Mathf.Clamp (transform.position.x, xmin, xmax); // clamp means you can't leave the constraints of the clamped area
 		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 	}
+	
+	void OnTriggerEnter2D(Collider2D col){
+		print("I've been hit!!!" + col);
+		Projectiles projectile = col.gameObject.GetComponent<Projectiles>();
+		
+		print(projectile.GetDamage());
+		if (projectile){
+			
+			projectile.Hit ();
+			playerHealth -= projectile.GetDamage();
+			
+			if (playerHealth <= 0){
+				Destroy (gameObject);
+			}
+		}
+	}
+	
+	
 }
