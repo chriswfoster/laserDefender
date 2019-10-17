@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Playershoot : MonoBehaviour {
+public class Projectile : MonoBehaviour {
 	
 	public GameObject laserPrefab;
 	public PlayerController player;
 	public float laserSpeed;
 	public float firingRate = 0.2f;
-	// Use this for initialization
+	public float damage = 100f;
+	
+	
 	void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//print("new! " + gameObject.GetComponent<Projectile>());
 		ShootLaser();
 	}
 	
@@ -34,4 +36,10 @@ public class Playershoot : MonoBehaviour {
 			CancelInvoke("SpamFire");
 		}
 	}
+	
+	void Hit(){
+		Destroy (gameObject);
+	}
+	
+	
 }

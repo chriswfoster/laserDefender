@@ -33,11 +33,9 @@ public class PlayerController : MonoBehaviour {
 		
 		if(Input.GetKey ("left")){
 			transform.position += Vector3.left * speed * Time.deltaTime;
-			print ("Left arrow pressed");
 		}
 		if(Input.GetKey ("right")){
 			transform.position += Vector3.right * speed * Time.deltaTime;
-			print ("Right arrow pressed");
 		}
 		//if(Input.GetKey ("down")){
 		//	transform.position += Vector3.down * speed * Time.deltaTime;
