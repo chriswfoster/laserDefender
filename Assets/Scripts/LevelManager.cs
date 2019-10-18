@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LevelManager : MonoBehaviour {
 	
-	public AudioClip levelcomplete;
+
 	
 	public void LoadLevel(string name){
 		Application.LoadLevel(name);

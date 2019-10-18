@@ -8,6 +8,7 @@ public class ShootingControls : MonoBehaviour {
 	public float laserSpeed;
 	public float firingRate = 0.2f;
 	
+	public AudioClip fireSound;
 	
 	
 	void Start () {
@@ -26,6 +27,7 @@ public class ShootingControls : MonoBehaviour {
 		playerPos.y += 0.78f;
 		GameObject laser = Instantiate (laserPrefab, playerPos, Quaternion.identity) as GameObject; //quaternion is rotations I think.
 		laser.rigidbody2D.velocity = new Vector3(0, laserSpeed, 0);
+		AudioSource.PlayClipAtPoint(fireSound, playerPos);
 		
 	}
 	

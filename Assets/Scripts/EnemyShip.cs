@@ -3,13 +3,19 @@ using System.Collections;
 
 public class EnemyShip : MonoBehaviour {
 
+	private ScoreKeeper scoreK;
+	public Explosion shipExplosion;
+	public int scoreValue = 1;
 	public float shipHealth = 150;
-	
 	public GameObject redLaserPrefab;
 	public float laserSpeed;
 	public float nextFire;
 	// my solution: 
 	public int firingRate = 20;
+	
+	public AudioClip explosion;
+	public AudioClip enemyShoot;
+	
 	
 	// their solution:
 	public float shotsPerSeconds = 0.5f;
@@ -17,6 +23,8 @@ public class EnemyShip : MonoBehaviour {
 	
 	void Start () {
 		nextFire = Time.time + (Random.Range (0, firingRate));
+		scoreK = GameObject.Find ("ScoreText").GetComponent<ScoreKeeper>();
+
 	}
 	
 	void Update () {
@@ -35,13 +43,21 @@ public class EnemyShip : MonoBehaviour {
 			shipHealth -= projectile.GetDamage();
 			
 			if (shipHealth <= 0){
-				Destroy (gameObject);
+				Die ();
 			}
 		}
 	}
 	
+	public void Die(){
+		AudioSource.PlayClipAtPoint(explosion, transform.position);
+		Instantiate(shipExplosion, transform.position, Quaternion.identity);
+		Destroy (gameObject);
+		scoreK.Score(scoreValue);
+		
+	}
+	
 	public void Fire(){
-
+		AudioSource.PlayClipAtPoint(enemyShoot, transform.position);
 		Vector3 enemyPos = transform.position + new Vector3(0, -0.70f, 0);
 		//enemyPos.y -= 0.78f; // my old offset method
 		GameObject laser = Instantiate (redLaserPrefab, enemyPos, Quaternion.identity) as GameObject; //quaternion is rotations I think.

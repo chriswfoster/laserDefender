@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 	float xmax = 5;
 	public float padding = 1f;
 	
+
 	void Start () {
 		float distance = transform.position.z - Camera.main.transform.position.z; 
 		Vector3 leftmost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance)); // gets the furthest left position
@@ -60,6 +61,8 @@ public class PlayerController : MonoBehaviour {
 			
 			if (playerHealth <= 0){
 				Destroy (gameObject);
+				LevelManager levelManager = GameObject.Find ("LevelManager").GetComponent<LevelManager>();
+				levelManager.LoadLevel("Lose Screen");
 			}
 		}
 	}

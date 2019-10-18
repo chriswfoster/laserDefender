@@ -5,6 +5,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	public GameObject enemyPrefab;
 	
+	private int scoreK;
 	public float width = 10f;
 	public float height = 5f;
 	public float speed = 1.5f;
@@ -17,6 +18,8 @@ public class EnemySpawner : MonoBehaviour {
 	public bool moveLeft = false;
 	 
 	void Start () {
+
+		
 		Debug.Log ("Empty Formation");
 		// send boundaries for enemy spawner
 		float distance = transform.position.z - Camera.main.transform.position.z; 
@@ -86,14 +89,18 @@ public class EnemySpawner : MonoBehaviour {
 	
 	void SpawnUntilFull(){
 		Transform freePosition = NextFreePosition();
-		if (freePosition){
+		scoreK = ScoreKeeper.gameScore;
+		if (freePosition && scoreK < 69){
 			GameObject enemy = Instantiate (enemyPrefab, freePosition.position, Quaternion.identity) as GameObject; // instantiate creates an object, so we're going to consider it as a GameObject
 			// below I'll attach the enemy so he's instantiated inside of the spawner
 			enemy.transform.parent = freePosition; // this says you'll be a child of our parent (whatever this script is attached to) transform
 		}
-		if(NextFreePosition()){
+		if(NextFreePosition() && scoreK < 69 ){
 			Invoke ("SpawnUntilFull", spawnDelay);
 		}
+		
+
+		
 		
 	}
 	
